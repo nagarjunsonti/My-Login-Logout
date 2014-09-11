@@ -64,7 +64,7 @@ $wpdb->insert(
 /* Including css**/
 function add_my_css(){
        
-        wp_enqueue_style( 'mystyle', plugins_url('/css/mystyle.css', __FILE__), false, '1.0.0', 'all');
+        wp_enqueue_style( 'mystyle', plugins_url('/mystyle.css', __FILE__), false, '1.0.0', 'all');
     }
     add_action('admin_enqueue_scripts', "add_my_css");
 
