@@ -50,5 +50,7 @@ it works both custom menu bar as well as defult menu bar
 = How do i use this plugin? =
 
 Simple just follow the instructions for installation and remember to activate  thats it!
+
+
 ===When Your down loading My Login Logout  files from the gethub===
 Please put css and js files with respect folders by creating. example css folder, js folder
