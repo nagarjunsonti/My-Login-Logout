@@ -5,7 +5,7 @@ Plugin URI:http://172.10.1.3:8056/Nagarjuna/firstplugin
 Description:With this plugin you can now add a real log in/logout item menu with auto switch when user is logged in or not.it works both Custom menubar as well as Defult menubar.We have a flexibility to set custom redirect pages for login as well as logout.it works both custom menu bar as well as default menu bar 
 Author: Nagarjun Sonti
 Author URI: http://172.10.1.3:8056/Nagarjuna/firstplugin
-Version: 2.3
+Version: 2.4
 License: GPL2 or later
 
 */
@@ -128,8 +128,8 @@ add_action( 'admin_enqueue_scripts', 'my_adding_styles' );
 
 function my_adding_scripts() 
 {
-	wp_register_script('jquery-2.0.2-min-js', plugins_url('/js/jquery-2.0.2-min.js', __FILE__), array('jquery'),'2.0.2', true);
-	wp_enqueue_script('jquery-2.0.2-min-js');
+	wp_register_script('jquery', 'http://code.jquery.com/jquery-latest.min.js', false);
+    wp_enqueue_script('jquery');
 	wp_register_script('myjs', plugins_url('/js/myjs.js', __FILE__), array('jquery'),'1.1', true);
 	wp_enqueue_script('myjs');
 }
@@ -151,7 +151,20 @@ function wtnerd_global_vars()
     $myll_links = $wpdb->get_row( "SELECT * FROM ".MyLLTABLE."" );
     $myloginid= get_permalink($myll_links->login_page);
     $mylogoutid= get_permalink($myll_links->logout_page);
-    $cu_lginurl= $myll_links->clogin_url;  
+    
+    if($myll_links->login_page=="index.php"){
+
+        $myloginid= get_permalink();
+        // $mylogoutid= get_permalink($myll_links->logout_page);
+
+    }
+    if($myll_links->logout_page=="index.php"){
+
+        // $myloginid= get_permalink($myll_links->login_page);
+        $mylogoutid= get_permalink();
+    }
+   
+    $cu_lginurl= $myll_links->clogin_url;     
 
     $display_menu_locations=$wpdb->get_col("SELECT menu_locations FROM ".MyLOCATIONTABLE." WHERE value=1");
 }
@@ -163,12 +176,15 @@ add_action( 'parse_query', 'wtnerd_global_vars' );
 function add_login_logout($items, $args)
 {
     global $display_menu_locations;
-    foreach($display_menu_locations as $display_menu_location){
+    
+    $items.=add_my_loginlogout_links();
 
-        if($args['theme_location']==$display_menu_location){
-          $items.=add_my_loginlogout_links();  
-        }
-    }   
+    // foreach($display_menu_locations as $display_menu_location){
+
+    //     if($args['theme_location']==$display_menu_location){
+    //       $items.=add_my_loginlogout_links();  
+    //     }
+    // }   
     return $items;
 }
 add_filter('wp_list_pages', 'add_login_logout', 10, 2);
@@ -209,7 +225,7 @@ function add_my_loginlogout_links()
 
 function add_logout_link(){   
     global $mylogoutid;
-    $newitems = '<li><a title="Logout" href="'.wp_logout_url($mylogoutid).'">logout</a></li>';
+    $newitems = '<li><a class="mylllmenu" title="Logout" href="'.wp_logout_url($mylogoutid).'">logout</a></li>';
     return $newitems;
 
 }
@@ -219,10 +235,10 @@ function add_login_link(){
     global $cu_lginurl;
 
     if(!empty($cu_lginurl)){
-          $newitems = '<li><a title="Logout" href="'.$cu_lginurl.'">login</a></li>';
+          $newitems = '<li><a class="mylllmenu" title="Logout" href="'.$cu_lginurl.'">login</a></li>';
           return $newitems;  
         }else{
-           $newitems = '<li><a title="Login" href="'.wp_login_url($myloginid) .'">login</a></li>'; 
+           $newitems = '<li><a class="mylllmenu" title="Login" href="'.wp_login_url($myloginid) .'">login</a></li>'; 
            return $newitems;
         }
 } 
@@ -333,4 +349,3 @@ function update_mylinks($data){
         array( 'id' => 1 ), 
         array( '%s','%s','%s'), array( '%d' ));
 }
-
