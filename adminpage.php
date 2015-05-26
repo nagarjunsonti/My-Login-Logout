@@ -113,8 +113,10 @@
     </tr>
     <tr>
         <td >
-        <h3 class="my-head">Where You Want </h3>
+        <h3 class="my-head">Where You Want <span style="float:right;color:green"><span >Note:</span> 
+  This section works only for custum menubar</span>  </h3>
         <p> Select the Check Box ,where the login/logout link will be active </p>
+
         </td>
     </tr>
 <?php
@@ -171,3 +173,13 @@ foreach( $locations as $key=>$location)
 <div style="color:green"><span style="font-weight:bold;">Note:</span> deactivate the plugin when you want to add new menu-location or changing the theme 
 </div>
 </div>
+
+
+
+
+
+
+
+
+
+
